@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://DefaultNamespace" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://DefaultNamespace" xmlns:intf="http://DefaultNamespace" xmlns:tns1="http://entity.azzurro" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://DefaultNamespace" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://entity.azzurro"/>
+   <element name="creaNotizia">
+    <complexType>
+     <sequence>
+      <element name="notizia" type="tns1:Notizia"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ArrayOf_tns1_Funzionalita">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns1:Funzionalita"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOf_tns1_GruppoDTO">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="tns1:GruppoDTO"/>
+    </sequence>
+   </complexType>
+   <element name="creaNotiziaResponse">
+    <complexType>
+     <sequence>
+      <element name="creaNotiziaReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="visualizzaNotizia">
+    <complexType>
+     <sequence>
+      <element name="id" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="visualizzaNotiziaResponse">
+    <complexType>
+     <sequence>
+      <element name="visualizzaNotiziaReturn" type="tns1:Notizia"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="trasmettiNotizia">
+    <complexType>
+     <sequence>
+      <element name="id" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="trasmettiNotiziaResponse">
+    <complexType>
+     <sequence>
+      <element name="trasmettiNotiziaReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cancellaNotizia">
+    <complexType>
+     <sequence>
+      <element name="id" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cancellaNotiziaResponse">
+    <complexType>
+     <sequence>
+      <element name="cancellaNotiziaReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="modificaNotizia">
+    <complexType>
+     <sequence>
+      <element name="notizia" type="tns1:Notizia"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="modificaNotiziaResponse">
+    <complexType>
+     <sequence>
+      <element name="modificaNotiziaReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="visualizzaListaNotizie">
+    <complexType/>
+   </element>
+   <element name="visualizzaListaNotizieResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="visualizzaListaNotizieReturn" type="tns1:Notizia"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="filtraNotizieFromStato">
+    <complexType>
+     <sequence>
+      <element name="stato" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="filtraNotizieFromStatoResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="filtraNotizieFromStatoReturn" type="tns1:Notizia"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="filtraNotizieFromAutore">
+    <complexType>
+     <sequence>
+      <element name="autore" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="filtraNotizieFromAutoreResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="filtraNotizieFromAutoreReturn" type="tns1:Notizia"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="filtraNotizieFromTitolo">
+    <complexType>
+     <sequence>
+      <element name="titolo" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="filtraNotizieFromTitoloResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="filtraNotizieFromTitoloReturn" type="tns1:Notizia"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="annullaModificaNotizia">
+    <complexType>
+     <sequence>
+      <element name="id" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="annullaModificaNotiziaResponse">
+    <complexType>
+     <sequence>
+      <element name="annullaModificaNotiziaReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+  <schema elementFormDefault="qualified" targetNamespace="http://entity.azzurro" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://DefaultNamespace"/>
+   <complexType name="DTO">
+    <sequence/>
+   </complexType>
+   <complexType name="Funzionalita">
+    <complexContent>
+     <extension base="tns1:DTO">
+      <sequence>
+       <element name="nomeFunzionalita" nillable="true" type="xsd:string"/>
+       <element name="siglaFunzionalita" nillable="true" type="xsd:string"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="GruppoDTO">
+    <sequence>
+     <element name="descrizione" nillable="true" type="xsd:string"/>
+     <element name="funzionalita" nillable="true" type="impl:ArrayOf_tns1_Funzionalita"/>
+     <element name="nomeGruppo" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="AccountDTO">
+    <sequence>
+     <element name="cognome" nillable="true" type="xsd:string"/>
+     <element name="gruppi" nillable="true" type="impl:ArrayOf_tns1_GruppoDTO"/>
+     <element name="nome" nillable="true" type="xsd:string"/>
+     <element name="password" nillable="true" type="xsd:string"/>
+     <element name="siglaGiornalista" nillable="true" type="xsd:string"/>
+     <element name="siglaRedazione" nillable="true" type="xsd:string"/>
+     <element name="stato" nillable="true" type="xsd:string"/>
+     <element name="username" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="Notizia">
+    <complexContent>
+     <extension base="tns1:DTO">
+      <sequence>
+       <element name="ID" type="xsd:int"/>
+       <element name="autore" nillable="true" type="tns1:AccountDTO"/>
+       <element name="blocco" nillable="true" type="xsd:string"/>
+       <element name="dataCreazione" nillable="true" type="xsd:dateTime"/>
+       <element name="dataTrasmissione" nillable="true" type="xsd:dateTime"/>
+       <element name="lunghezzaTesto" type="xsd:int"/>
+       <element name="sottotitolo" nillable="true" type="xsd:string"/>
+       <element name="stato" nillable="true" type="xsd:string"/>
+       <element name="testo" nillable="true" type="xsd:string"/>
+       <element name="titolo" nillable="true" type="xsd:string"/>
+       <element name="ultimoDigitatore" nillable="true" type="tns1:AccountDTO"/>
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="filtraNotizieFromAutoreRequest">
+
+      <wsdl:part element="impl:filtraNotizieFromAutore" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="filtraNotizieFromAutoreResponse">
+
+      <wsdl:part element="impl:filtraNotizieFromAutoreResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="filtraNotizieFromTitoloRequest">
+
+      <wsdl:part element="impl:filtraNotizieFromTitolo" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="filtraNotizieFromStatoResponse">
+
+      <wsdl:part element="impl:filtraNotizieFromStatoResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="filtraNotizieFromTitoloResponse">
+
+      <wsdl:part element="impl:filtraNotizieFromTitoloResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="trasmettiNotiziaRequest">
+
+      <wsdl:part element="impl:trasmettiNotizia" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="annullaModificaNotiziaResponse">
+
+      <wsdl:part element="impl:annullaModificaNotiziaResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="filtraNotizieFromStatoRequest">
+
+      <wsdl:part element="impl:filtraNotizieFromStato" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="visualizzaListaNotizieResponse">
+
+      <wsdl:part element="impl:visualizzaListaNotizieResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="trasmettiNotiziaResponse">
+
+      <wsdl:part element="impl:trasmettiNotiziaResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="creaNotiziaResponse">
+
+      <wsdl:part element="impl:creaNotiziaResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="visualizzaListaNotizieRequest">
+
+      <wsdl:part element="impl:visualizzaListaNotizie" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="visualizzaNotiziaRequest">
+
+      <wsdl:part element="impl:visualizzaNotizia" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="annullaModificaNotiziaRequest">
+
+      <wsdl:part element="impl:annullaModificaNotizia" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modificaNotiziaRequest">
+
+      <wsdl:part element="impl:modificaNotizia" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="cancellaNotiziaResponse">
+
+      <wsdl:part element="impl:cancellaNotiziaResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="creaNotiziaRequest">
+
+      <wsdl:part element="impl:creaNotizia" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="cancellaNotiziaRequest">
+
+      <wsdl:part element="impl:cancellaNotizia" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="visualizzaNotiziaResponse">
+
+      <wsdl:part element="impl:visualizzaNotiziaResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modificaNotiziaResponse">
+
+      <wsdl:part element="impl:modificaNotiziaResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="NotiziaServiceOnline">
+
+      <wsdl:operation name="creaNotizia">
+
+         <wsdl:input message="impl:creaNotiziaRequest" name="creaNotiziaRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:creaNotiziaResponse" name="creaNotiziaResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="visualizzaNotizia">
+
+         <wsdl:input message="impl:visualizzaNotiziaRequest" name="visualizzaNotiziaRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:visualizzaNotiziaResponse" name="visualizzaNotiziaResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="trasmettiNotizia">
+
+         <wsdl:input message="impl:trasmettiNotiziaRequest" name="trasmettiNotiziaRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:trasmettiNotiziaResponse" name="trasmettiNotiziaResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancellaNotizia">
+
+         <wsdl:input message="impl:cancellaNotiziaRequest" name="cancellaNotiziaRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:cancellaNotiziaResponse" name="cancellaNotiziaResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="modificaNotizia">
+
+         <wsdl:input message="impl:modificaNotiziaRequest" name="modificaNotiziaRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:modificaNotiziaResponse" name="modificaNotiziaResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="visualizzaListaNotizie">
+
+         <wsdl:input message="impl:visualizzaListaNotizieRequest" name="visualizzaListaNotizieRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:visualizzaListaNotizieResponse" name="visualizzaListaNotizieResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="filtraNotizieFromStato">
+
+         <wsdl:input message="impl:filtraNotizieFromStatoRequest" name="filtraNotizieFromStatoRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:filtraNotizieFromStatoResponse" name="filtraNotizieFromStatoResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="filtraNotizieFromAutore">
+
+         <wsdl:input message="impl:filtraNotizieFromAutoreRequest" name="filtraNotizieFromAutoreRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:filtraNotizieFromAutoreResponse" name="filtraNotizieFromAutoreResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="filtraNotizieFromTitolo">
+
+         <wsdl:input message="impl:filtraNotizieFromTitoloRequest" name="filtraNotizieFromTitoloRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:filtraNotizieFromTitoloResponse" name="filtraNotizieFromTitoloResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="annullaModificaNotizia">
+
+         <wsdl:input message="impl:annullaModificaNotiziaRequest" name="annullaModificaNotiziaRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:annullaModificaNotiziaResponse" name="annullaModificaNotiziaResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="NotiziaServiceOnlineSoapBinding" type="impl:NotiziaServiceOnline">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="creaNotizia">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="creaNotiziaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="creaNotiziaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="visualizzaNotizia">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="visualizzaNotiziaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="visualizzaNotiziaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="trasmettiNotizia">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="trasmettiNotiziaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="trasmettiNotiziaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cancellaNotizia">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cancellaNotiziaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cancellaNotiziaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="modificaNotizia">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="modificaNotiziaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="modificaNotiziaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="visualizzaListaNotizie">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="visualizzaListaNotizieRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="visualizzaListaNotizieResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="filtraNotizieFromStato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="filtraNotizieFromStatoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="filtraNotizieFromStatoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="filtraNotizieFromAutore">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="filtraNotizieFromAutoreRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="filtraNotizieFromAutoreResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="filtraNotizieFromTitolo">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="filtraNotizieFromTitoloRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="filtraNotizieFromTitoloResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="annullaModificaNotizia">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="annullaModificaNotiziaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="annullaModificaNotiziaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="NotiziaServiceOnlineService">
+
+      <wsdl:port binding="impl:NotiziaServiceOnlineSoapBinding" name="NotiziaServiceOnline">
+
+         <wsdlsoap:address location="http://localhost:8080/NotiziaWebService/services/NotiziaServiceOnline"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

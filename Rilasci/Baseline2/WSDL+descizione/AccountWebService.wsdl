@@ -1,3 +1,12 @@
+<!--
+Errori:
+ - Rivecedere il numero di occorrenze degli elementi presenti nelle sequence.
+ - Rivedere i parametri passati nei messaggi di richiesta e risposta.
+ 
+ - Si consiglia di non ritornare Exception java like! Meglio axis fault con codice d'errore.
+-->
+
+
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://wsbl.azzurro" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ax23="http://rmi.java/xsd" xmlns:ax24="http://io.java/xsd" xmlns:ax21="http://entity.azzurro/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://wsbl.azzurro">
     <wsdl:documentation>

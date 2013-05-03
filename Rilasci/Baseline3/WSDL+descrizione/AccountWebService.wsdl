@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://wsbl.azzurro" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ax21="http://entity.azzurro/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://wsbl.azzurro">
+    <wsdl:documentation>
+		Please Type your service description here
+	</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://entity.azzurro/xsd">
+            <xs:complexType name="AccountDTO">
+                <xs:sequence>
+                    <xs:element name="cognome" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="gruppi" nillable="true" type="ax21:GruppoDTO"/>
+                    <xs:element name="nome" type="xs:string"/>
+                    <xs:element name="password" type="xs:string"/>
+                    <xs:element minOccurs="0" name="siglaGiornalista" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="siglaRedazione" nillable="true" type="xs:string"/>
+                    <xs:element name="stato" type="xs:string"/>
+                    <xs:element name="username" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GruppoDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="descrizione" nillable="true" type="xs:string"/>
+                    <xs:element name="nomeGruppo" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="funzionalita" nillable="true" type="ax21:Funzionalita"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Funzionalita">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="nomeFunzionalita" nillable="true" type="xs:string"/>
+                    <xs:element name="siglaFunzionalita" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:ax22="http://entity.azzurro/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://wsbl.azzurro">
+            <xs:import namespace="http://entity.azzurro/xsd"/>
+            <xs:element name="visualizza">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="amministratore" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="visualizzaResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="ax21:AccountDTO"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="verificaAccount">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="siglaFunzionalita" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="verificaAccountResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:boolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="riattiva">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="amministratore" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="riattivaResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="modifica">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="account" type="ax21:AccountDTO"/>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="modificaResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="listaGruppiWS">
+                <xs:complexType>
+                    <xs:sequence/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="listaGruppiWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="return" nillable="true" type="ax21:GruppoDTO"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="listaAccountsWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="listaAccountsWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="return" nillable="true" type="ax21:AccountDTO"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="creaAccountWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="account" type="ax21:AccountDTO"/>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="creaAccountWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:boolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="cancella">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="user" type="xs:string"/>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="cancellaResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="autenticazioneAccountWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="autenticazioneAccountWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="ax21:AccountDTO"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="listaAccountsWSRequest">
+        <wsdl:part name="parameters" element="ns:listaAccountsWS"/>
+    </wsdl:message>
+    <wsdl:message name="listaAccountsWSResponse">
+        <wsdl:part name="parameters" element="ns:listaAccountsWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="cancellaRequest">
+        <wsdl:part name="parameters" element="ns:cancella"/>
+    </wsdl:message>
+    <wsdl:message name="cancellaResponse">
+        <wsdl:part name="parameters" element="ns:cancellaResponse"/>
+    </wsdl:message>
+    <wsdl:message name="creaAccountWSRequest">
+        <wsdl:part name="parameters" element="ns:creaAccountWS"/>
+    </wsdl:message>
+    <wsdl:message name="creaAccountWSResponse">
+        <wsdl:part name="parameters" element="ns:creaAccountWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="visualizzaRequest">
+        <wsdl:part name="parameters" element="ns:visualizza"/>
+    </wsdl:message>
+    <wsdl:message name="visualizzaResponse">
+        <wsdl:part name="parameters" element="ns:visualizzaResponse"/>
+    </wsdl:message>
+    <wsdl:message name="listaGruppiWSRequest">
+        <wsdl:part name="parameters" element="ns:listaGruppiWS"/>
+    </wsdl:message>
+    <wsdl:message name="listaGruppiWSResponse">
+        <wsdl:part name="parameters" element="ns:listaGruppiWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="riattivaRequest">
+        <wsdl:part name="parameters" element="ns:riattiva"/>
+    </wsdl:message>
+    <wsdl:message name="riattivaResponse">
+        <wsdl:part name="parameters" element="ns:riattivaResponse"/>
+    </wsdl:message>
+    <wsdl:message name="autenticazioneAccountWSRequest">
+        <wsdl:part name="parameters" element="ns:autenticazioneAccountWS"/>
+    </wsdl:message>
+    <wsdl:message name="autenticazioneAccountWSResponse">
+        <wsdl:part name="parameters" element="ns:autenticazioneAccountWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="modificaRequest">
+        <wsdl:part name="parameters" element="ns:modifica"/>
+    </wsdl:message>
+    <wsdl:message name="modificaResponse">
+        <wsdl:part name="parameters" element="ns:modificaResponse"/>
+    </wsdl:message>
+    <wsdl:message name="verificaAccountRequest">
+        <wsdl:part name="parameters" element="ns:verificaAccount"/>
+    </wsdl:message>
+    <wsdl:message name="verificaAccountResponse">
+        <wsdl:part name="parameters" element="ns:verificaAccountResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="AccountWebServicePortType">
+        <wsdl:operation name="listaAccountsWS">
+            <wsdl:input message="ns:listaAccountsWSRequest" wsaw:Action="urn:listaAccountsWS"/>
+            <wsdl:output message="ns:listaAccountsWSResponse" wsaw:Action="urn:listaAccountsWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="cancella">
+            <wsdl:input message="ns:cancellaRequest" wsaw:Action="urn:cancella"/>
+            <wsdl:output message="ns:cancellaResponse" wsaw:Action="urn:cancellaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="creaAccountWS">
+            <wsdl:input message="ns:creaAccountWSRequest" wsaw:Action="urn:creaAccountWS"/>
+            <wsdl:output message="ns:creaAccountWSResponse" wsaw:Action="urn:creaAccountWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="visualizza">
+            <wsdl:input message="ns:visualizzaRequest" wsaw:Action="urn:visualizza"/>
+            <wsdl:output message="ns:visualizzaResponse" wsaw:Action="urn:visualizzaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="listaGruppiWS">
+            <wsdl:input message="ns:listaGruppiWSRequest" wsaw:Action="urn:listaGruppiWS"/>
+            <wsdl:output message="ns:listaGruppiWSResponse" wsaw:Action="urn:listaGruppiWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="riattiva">
+            <wsdl:input message="ns:riattivaRequest" wsaw:Action="urn:riattiva"/>
+            <wsdl:output message="ns:riattivaResponse" wsaw:Action="urn:riattivaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="autenticazioneAccountWS">
+            <wsdl:input message="ns:autenticazioneAccountWSRequest" wsaw:Action="urn:autenticazioneAccountWS"/>
+            <wsdl:output message="ns:autenticazioneAccountWSResponse" wsaw:Action="urn:autenticazioneAccountWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="modifica">
+            <wsdl:input message="ns:modificaRequest" wsaw:Action="urn:modifica"/>
+            <wsdl:output message="ns:modificaResponse" wsaw:Action="urn:modificaResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="verificaAccount">
+            <wsdl:input message="ns:verificaAccountRequest" wsaw:Action="urn:verificaAccount"/>
+            <wsdl:output message="ns:verificaAccountResponse" wsaw:Action="urn:verificaAccountResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="AccountWebServiceSoap11Binding" type="ns:AccountWebServicePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="listaAccountsWS">
+            <soap:operation soapAction="urn:listaAccountsWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="cancella">
+            <soap:operation soapAction="urn:cancella" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="creaAccountWS">
+            <soap:operation soapAction="urn:creaAccountWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="visualizza">
+            <soap:operation soapAction="urn:visualizza" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="riattiva">
+            <soap:operation soapAction="urn:riattiva" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="listaGruppiWS">
+            <soap:operation soapAction="urn:listaGruppiWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="autenticazioneAccountWS">
+            <soap:operation soapAction="urn:autenticazioneAccountWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="verificaAccount">
+            <soap:operation soapAction="urn:verificaAccount" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="modifica">
+            <soap:operation soapAction="urn:modifica" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="AccountWebServiceSoap12Binding" type="ns:AccountWebServicePortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="listaAccountsWS">
+            <soap12:operation soapAction="urn:listaAccountsWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="cancella">
+            <soap12:operation soapAction="urn:cancella" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="creaAccountWS">
+            <soap12:operation soapAction="urn:creaAccountWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="visualizza">
+            <soap12:operation soapAction="urn:visualizza" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="riattiva">
+            <soap12:operation soapAction="urn:riattiva" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="listaGruppiWS">
+            <soap12:operation soapAction="urn:listaGruppiWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="autenticazioneAccountWS">
+            <soap12:operation soapAction="urn:autenticazioneAccountWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="verificaAccount">
+            <soap12:operation soapAction="urn:verificaAccount" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="modifica">
+            <soap12:operation soapAction="urn:modifica" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="AccountWebServiceHttpBinding" type="ns:AccountWebServicePortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="listaAccountsWS">
+            <http:operation location="listaAccountsWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="cancella">
+            <http:operation location="cancella"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="creaAccountWS">
+            <http:operation location="creaAccountWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="visualizza">
+            <http:operation location="visualizza"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="riattiva">
+            <http:operation location="riattiva"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="listaGruppiWS">
+            <http:operation location="listaGruppiWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="autenticazioneAccountWS">
+            <http:operation location="autenticazioneAccountWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="verificaAccount">
+            <http:operation location="verificaAccount"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="modifica">
+            <http:operation location="modifica"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="AccountWebService">
+        <wsdl:port name="AccountWebServiceHttpSoap11Endpoint" binding="ns:AccountWebServiceSoap11Binding">
+            <soap:address location="http://localhost:8080/GruppoAzzurroWSBL/services/AccountWebService.AccountWebServiceHttpSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="AccountWebServiceHttpSoap12Endpoint" binding="ns:AccountWebServiceSoap12Binding">
+            <soap12:address location="http://localhost:8080/GruppoAzzurroWSBL/services/AccountWebService.AccountWebServiceHttpSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="AccountWebServiceHttpEndpoint" binding="ns:AccountWebServiceHttpBinding">
+            <http:address location="http://localhost:8080/GruppoAzzurroWSBL/services/AccountWebService.AccountWebServiceHttpEndpoint/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

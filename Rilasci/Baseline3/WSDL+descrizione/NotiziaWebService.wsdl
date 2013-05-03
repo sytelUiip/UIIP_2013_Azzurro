@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://wsbl.azzurro" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ax23="http://entity.azzurro/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://wsbl.azzurro">
+    <wsdl:documentation>
+		Please Type your service description here
+	</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://entity.azzurro/xsd">
+            <xs:complexType name="Notizia">
+                <xs:sequence>
+                    <xs:element name="ID" type="xs:int"/>
+                    <xs:element name="autore" nillable="true" type="ax23:AccountDTO"/>
+                    <xs:element name="blocco" nillable="true" type="xs:string"/>
+                    <xs:element name="dataCreazione" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="dataTrasmissione" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="lunghezzaTesto" type="xs:int"/>
+                    <xs:element name="sottotitolo" type="xs:string"/>
+                    <xs:element name="stato" type="xs:string"/>
+                    <xs:element name="testo" type="xs:string"/>
+                    <xs:element name="titolo" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ultimoAccesso" nillable="true" type="ax23:AccountDTO"/>
+                    <xs:element minOccurs="0" name="ultimoDigitatore" nillable="true" type="ax23:AccountDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="AccountDTO">
+                <xs:sequence>
+                   <xs:element name="cognome" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="gruppi" nillable="true" type="ax21:GruppoDTO"/>
+                    <xs:element name="nome" type="xs:string"/>
+                    <xs:element name="password" type="xs:string"/>
+                    <xs:element minOccurs="0" name="siglaGiornalista" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="siglaRedazione" nillable="true" type="xs:string"/>
+                    <xs:element name="stato" type="xs:string"/>
+                    <xs:element name="username" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="GruppoDTO">
+                <xs:sequence>
+					<xs:element minOccurs="0" name="descrizione" nillable="true" type="xs:string"/>
+                    <xs:element name="nomeGruppo" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="funzionalita" nillable="true" type="ax21:Funzionalita"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Funzionalita">
+                <xs:sequence>
+                     <xs:element minOccurs="0" name="nomeFunzionalita" nillable="true" type="xs:string"/>
+                    <xs:element name="siglaFunzionalita" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:ax24="http://entity.azzurro/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://wsbl.azzurro">
+            <xs:import namespace="http://entity.azzurro/xsd"/>
+            <xs:element name="visualizzaNotiziaWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:int"/>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="visualizzaNotiziaWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="ax23:Notizia"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="trasmettiNotiziaWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:int"/>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="trasmettiNotiziaWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:boolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="registraNotiziaWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="notizia" type="ax23:Notizia"/>
+                        <xs:element name="ultimoDigitatore" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="registraNotiziaWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:boolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="modificaNotiziaWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:int"/>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="modificaNotiziaWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="ax23:Notizia"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getListaNotizieWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                        <xs:element name="numNotizie" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getListaNotizieWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="return" nillable="true" type="ax23:Notizia"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getListaNotizieFiltroWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="campoRicerca" type="xs:string"/>
+                        <xs:element name="valoreCampoRicerca"  type="xs:string"/>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                        <xs:element name="numNotizie" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType> 
+            </xs:element>
+            <xs:element name="getListaNotizieFiltroWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="return" nillable="true" type="ax23:Notizia"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="creaNotiziaWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="notizia" type="ax23:Notizia"/>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="creaNotiziaWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:boolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="cancellaWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:int"/>
+                        <xs:element name="giornalista" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="cancellaWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:boolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="annullaModificheTutteLeNotizieWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="annullaModificheTutteLeNotizieWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:boolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="annullaModificaNotiziaWS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:int"/>
+                        <xs:element name="username" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="annullaModificaNotiziaWSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:boolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="visualizzaNotiziaWSRequest">
+        <wsdl:part name="parameters" element="ns:visualizzaNotiziaWS"/>
+    </wsdl:message>
+    <wsdl:message name="visualizzaNotiziaWSResponse">
+        <wsdl:part name="parameters" element="ns:visualizzaNotiziaWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getListaNotizieFiltroWSRequest">
+        <wsdl:part name="parameters" element="ns:getListaNotizieFiltroWS"/>
+    </wsdl:message>
+    <wsdl:message name="getListaNotizieFiltroWSResponse">
+        <wsdl:part name="parameters" element="ns:getListaNotizieFiltroWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getListaNotizieWSRequest">
+        <wsdl:part name="parameters" element="ns:getListaNotizieWS"/>
+    </wsdl:message>
+    <wsdl:message name="getListaNotizieWSResponse">
+        <wsdl:part name="parameters" element="ns:getListaNotizieWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="creaNotiziaWSRequest">
+        <wsdl:part name="parameters" element="ns:creaNotiziaWS"/>
+    </wsdl:message>
+    <wsdl:message name="creaNotiziaWSResponse">
+        <wsdl:part name="parameters" element="ns:creaNotiziaWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="cancellaWSRequest">
+        <wsdl:part name="parameters" element="ns:cancellaWS"/>
+    </wsdl:message>
+    <wsdl:message name="cancellaWSResponse">
+        <wsdl:part name="parameters" element="ns:cancellaWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="trasmettiNotiziaWSRequest">
+        <wsdl:part name="parameters" element="ns:trasmettiNotiziaWS"/>
+    </wsdl:message>
+    <wsdl:message name="trasmettiNotiziaWSResponse">
+        <wsdl:part name="parameters" element="ns:trasmettiNotiziaWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="annullaModificaNotiziaWSRequest">
+        <wsdl:part name="parameters" element="ns:annullaModificaNotiziaWS"/>
+    </wsdl:message>
+    <wsdl:message name="annullaModificaNotiziaWSResponse">
+        <wsdl:part name="parameters" element="ns:annullaModificaNotiziaWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="modificaNotiziaWSRequest">
+        <wsdl:part name="parameters" element="ns:modificaNotiziaWS"/>
+    </wsdl:message>
+    <wsdl:message name="modificaNotiziaWSResponse">
+        <wsdl:part name="parameters" element="ns:modificaNotiziaWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="annullaModificheTutteLeNotizieWSRequest">
+        <wsdl:part name="parameters" element="ns:annullaModificheTutteLeNotizieWS"/>
+    </wsdl:message>
+    <wsdl:message name="annullaModificheTutteLeNotizieWSResponse">
+        <wsdl:part name="parameters" element="ns:annullaModificheTutteLeNotizieWSResponse"/>
+    </wsdl:message>
+    <wsdl:message name="registraNotiziaWSRequest">
+        <wsdl:part name="parameters" element="ns:registraNotiziaWS"/>
+    </wsdl:message>
+    <wsdl:message name="registraNotiziaWSResponse">
+        <wsdl:part name="parameters" element="ns:registraNotiziaWSResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="NotiziaWebServicePortType">
+        <wsdl:operation name="visualizzaNotiziaWS">
+            <wsdl:input message="ns:visualizzaNotiziaWSRequest" wsaw:Action="urn:visualizzaNotiziaWS"/>
+            <wsdl:output message="ns:visualizzaNotiziaWSResponse" wsaw:Action="urn:visualizzaNotiziaWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getListaNotizieFiltroWS">
+            <wsdl:input message="ns:getListaNotizieFiltroWSRequest" wsaw:Action="urn:getListaNotizieFiltroWS"/>
+            <wsdl:output message="ns:getListaNotizieFiltroWSResponse" wsaw:Action="urn:getListaNotizieFiltroWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getListaNotizieWS">
+            <wsdl:input message="ns:getListaNotizieWSRequest" wsaw:Action="urn:getListaNotizieWS"/>
+            <wsdl:output message="ns:getListaNotizieWSResponse" wsaw:Action="urn:getListaNotizieWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="creaNotiziaWS">
+            <wsdl:input message="ns:creaNotiziaWSRequest" wsaw:Action="urn:creaNotiziaWS"/>
+            <wsdl:output message="ns:creaNotiziaWSResponse" wsaw:Action="urn:creaNotiziaWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="cancellaWS">
+            <wsdl:input message="ns:cancellaWSRequest" wsaw:Action="urn:cancellaWS"/>
+            <wsdl:output message="ns:cancellaWSResponse" wsaw:Action="urn:cancellaWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="trasmettiNotiziaWS">
+            <wsdl:input message="ns:trasmettiNotiziaWSRequest" wsaw:Action="urn:trasmettiNotiziaWS"/>
+            <wsdl:output message="ns:trasmettiNotiziaWSResponse" wsaw:Action="urn:trasmettiNotiziaWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="annullaModificaNotiziaWS">
+            <wsdl:input message="ns:annullaModificaNotiziaWSRequest" wsaw:Action="urn:annullaModificaNotiziaWS"/>
+            <wsdl:output message="ns:annullaModificaNotiziaWSResponse" wsaw:Action="urn:annullaModificaNotiziaWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="modificaNotiziaWS">
+            <wsdl:input message="ns:modificaNotiziaWSRequest" wsaw:Action="urn:modificaNotiziaWS"/>
+            <wsdl:output message="ns:modificaNotiziaWSResponse" wsaw:Action="urn:modificaNotiziaWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="annullaModificheTutteLeNotizieWS">
+            <wsdl:input message="ns:annullaModificheTutteLeNotizieWSRequest" wsaw:Action="urn:annullaModificheTutteLeNotizieWS"/>
+            <wsdl:output message="ns:annullaModificheTutteLeNotizieWSResponse" wsaw:Action="urn:annullaModificheTutteLeNotizieWSResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="registraNotiziaWS">
+            <wsdl:input message="ns:registraNotiziaWSRequest" wsaw:Action="urn:registraNotiziaWS"/>
+            <wsdl:output message="ns:registraNotiziaWSResponse" wsaw:Action="urn:registraNotiziaWSResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="NotiziaWebServiceSoap11Binding" type="ns:NotiziaWebServicePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="visualizzaNotiziaWS">
+            <soap:operation soapAction="urn:visualizzaNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getListaNotizieWS">
+            <soap:operation soapAction="urn:getListaNotizieWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getListaNotizieFiltroWS">
+            <soap:operation soapAction="urn:getListaNotizieFiltroWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="creaNotiziaWS">
+            <soap:operation soapAction="urn:creaNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="cancellaWS">
+            <soap:operation soapAction="urn:cancellaWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="trasmettiNotiziaWS">
+            <soap:operation soapAction="urn:trasmettiNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="annullaModificaNotiziaWS">
+            <soap:operation soapAction="urn:annullaModificaNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="annullaModificheTutteLeNotizieWS">
+            <soap:operation soapAction="urn:annullaModificheTutteLeNotizieWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="modificaNotiziaWS">
+            <soap:operation soapAction="urn:modificaNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="registraNotiziaWS">
+            <soap:operation soapAction="urn:registraNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="NotiziaWebServiceSoap12Binding" type="ns:NotiziaWebServicePortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="visualizzaNotiziaWS">
+            <soap12:operation soapAction="urn:visualizzaNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getListaNotizieWS">
+            <soap12:operation soapAction="urn:getListaNotizieWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getListaNotizieFiltroWS">
+            <soap12:operation soapAction="urn:getListaNotizieFiltroWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="creaNotiziaWS">
+            <soap12:operation soapAction="urn:creaNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="cancellaWS">
+            <soap12:operation soapAction="urn:cancellaWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="trasmettiNotiziaWS">
+            <soap12:operation soapAction="urn:trasmettiNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="annullaModificaNotiziaWS">
+            <soap12:operation soapAction="urn:annullaModificaNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="annullaModificheTutteLeNotizieWS">
+            <soap12:operation soapAction="urn:annullaModificheTutteLeNotizieWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="modificaNotiziaWS">
+            <soap12:operation soapAction="urn:modificaNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="registraNotiziaWS">
+            <soap12:operation soapAction="urn:registraNotiziaWS" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="NotiziaWebServiceHttpBinding" type="ns:NotiziaWebServicePortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="visualizzaNotiziaWS">
+            <http:operation location="visualizzaNotiziaWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getListaNotizieWS">
+            <http:operation location="getListaNotizieWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getListaNotizieFiltroWS">
+            <http:operation location="getListaNotizieFiltroWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="creaNotiziaWS">
+            <http:operation location="creaNotiziaWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="cancellaWS">
+            <http:operation location="cancellaWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="trasmettiNotiziaWS">
+            <http:operation location="trasmettiNotiziaWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="annullaModificaNotiziaWS">
+            <http:operation location="annullaModificaNotiziaWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="annullaModificheTutteLeNotizieWS">
+            <http:operation location="annullaModificheTutteLeNotizieWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="modificaNotiziaWS">
+            <http:operation location="modificaNotiziaWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="registraNotiziaWS">
+            <http:operation location="registraNotiziaWS"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="NotiziaWebService">
+        <wsdl:port name="NotiziaWebServiceHttpSoap11Endpoint" binding="ns:NotiziaWebServiceSoap11Binding">
+            <soap:address location="http://localhost:8080/GruppoAzzurroWSBL/services/NotiziaWebService.NotiziaWebServiceHttpSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="NotiziaWebServiceHttpSoap12Endpoint" binding="ns:NotiziaWebServiceSoap12Binding">
+            <soap12:address location="http://localhost:8080/GruppoAzzurroWSBL/services/NotiziaWebService.NotiziaWebServiceHttpSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="NotiziaWebServiceHttpEndpoint" binding="ns:NotiziaWebServiceHttpBinding">
+            <http:address location="http://localhost:8080/GruppoAzzurroWSBL/services/NotiziaWebService.NotiziaWebServiceHttpEndpoint/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,1 @@
+java -jar Inizializzazione_Directory_Sistema.jar

@@ -1,0 +1,647 @@
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."ANNULLA_MODIFICA_NOTIZIA" 
+(ID_N IN integer
+)
+AS 
+BEGIN
+  UPDATE GRUPPO_AZZURRO.NOTIZIA SET BLOCCO='N' WHERE ID=ID_N; 
+END ANNULLA_MODIFICA_NOTIZIA;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."BLOCCO_NOTIZIA" 
+(
+  NEW_LOCK IN VARCHAR2  
+, ID_N IN NUMBER 
+) AS 
+BEGIN
+  UPDATE GRUPPO_AZZURRO.NOTIZIA SET BLOCCO=NEW_LOCK 
+  where ID=ID_N;
+  commit;
+END BLOCCO_NOTIZIA;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."CANCELLA_NOTIZIA" (
+
+ID_N IN NUMBER 
+, USERNAME_N IN VARCHAR2
+)AS 
+BEGIN
+ update GRUPPO_AZZURRO.NOTIZIA SET STATO='C',ULTIMO_ACCESSO=USERNAME_N WHERE id=ID_N;
+END CANCELLA_NOTIZIA;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."DELETE_ACCOUNT" 
+(
+  NEW_STATO IN VARCHAR2 , 
+ USERNAME_A IN VARCHAR2  
+) AS 
+BEGIN
+ 
+  update GRUPPO_AZZURRO.account set stato=NEW_STATO  
+where username=USERNAME_A;
+delete  from gruppo_azzurro.account_gruppo where username=USERNAME_A;
+END DELETE_ACCOUNT;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."DELETE_GR_ACC_FROM_USER" 
+(
+   USERNAME_A IN VARCHAR2  
+) AS 
+BEGIN
+ 
+  DELETE FROM GRUPPO_AZZURRO.ACCOUNT_GRUPPO   
+where username=USERNAME_A;
+END DELETE_GR_ACC_FROM_USER;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."FILTRA_NOTIZIE" 
+(
+MIN_N IN INTEGER,
+MAX_N IN INTEGER,
+CURSOR_N OUT SYS_REFCURSOR
+)
+AS
+BEGIN 
+OPEN CURSOR_N 
+FOR
+SELECT * FROM
+(SELECT e.*, ROWNUM rnum
+FROM
+(
+SELECT ID,STATO,blocco,TITOLO,SOTTOTITOLO,AUTORE,ULTIMO_DIGITATORE,ULTIMO_ACCESSO,DATA_CREAZIONE,DATA_TRASMISSIONE,LUNGHEZZA_TESTO 
+FROM GRUPPO_AZZURRO.NOTIZIA 
+ORDER BY NOTIZIA.DATA_CREAZIONE DESC
+) e
+WHERE ROWNUM <=MAX_N ) 
+WHERE rnum >=MIN_N;
+END FILTRA_NOTIZIE;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."FILTRA_PER_AUTORE" 
+(
+AUTORE_N IN VARCHAR2,
+MIN_N IN INTEGER,
+MAX_N IN INTEGER,
+CURSOR_N OUT SYS_REFCURSOR
+)
+AS
+BEGIN 
+OPEN CURSOR_N 
+FOR
+SELECT * FROM
+(SELECT e.*, ROWNUM rnum
+FROM
+(
+SELECT ID,STATO,blocco,TITOLO,SOTTOTITOLO,AUTORE,ULTIMO_DIGITATORE,DATA_CREAZIONE,ULTIMO_ACCESSO,DATA_TRASMISSIONE,LUNGHEZZA_TESTO 
+FROM GRUPPO_AZZURRO.NOTIZIA 
+WHERE lower(NOTIZIA.AUTORE) LIKE lower('%' || AUTORE_N || '%' )
+ORDER BY NOTIZIA.DATA_CREAZIONE DESC
+) e
+WHERE ROWNUM <=MAX_N ) 
+WHERE rnum >=MIN_N;
+END FILTRA_PER_AUTORE;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."FILTRA_PER_STATO" (
+STATO_N IN VARCHAR2,
+MIN_N IN INTEGER,
+MAX_N IN INTEGER,
+CURSOR_N OUT SYS_REFCURSOR
+)
+AS
+BEGIN 
+OPEN CURSOR_N 
+FOR
+SELECT * FROM
+(SELECT e.*, ROWNUM rnum
+FROM
+(
+SELECT ID,STATO,blocco,TITOLO,SOTTOTITOLO,AUTORE,ULTIMO_DIGITATORE,DATA_CREAZIONE,ULTIMO_ACCESSO,DATA_TRASMISSIONE,LUNGHEZZA_TESTO 
+FROM GRUPPO_AZZURRO.NOTIZIA 
+WHERE STATO= STATO_N 
+ORDER BY NOTIZIA.DATA_CREAZIONE DESC
+) e
+WHERE ROWNUM <=MAX_N ) 
+WHERE rnum >=MIN_N;
+END FILTRA_PER_STATO;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."FILTRA_PER_TITOLO" 
+(
+TITOLO_N IN VARCHAR2,
+MIN_N IN INTEGER,
+MAX_N IN INTEGER,
+CURSOR_N OUT SYS_REFCURSOR
+)
+AS
+BEGIN 
+OPEN CURSOR_N 
+FOR
+SELECT * FROM
+(SELECT e.*, ROWNUM rnum
+FROM
+(
+SELECT ID,STATO,blocco,TITOLO,SOTTOTITOLO,AUTORE,ULTIMO_DIGITATORE,DATA_CREAZIONE,ULTIMO_ACCESSO,DATA_TRASMISSIONE,LUNGHEZZA_TESTO 
+FROM GRUPPO_AZZURRO.NOTIZIA 
+WHERE lower(NOTIZIA.TITOLO) LIKE lower('%' || TITOLO_N || '%' )
+ORDER BY NOTIZIA.DATA_CREAZIONE DESC
+) e
+WHERE ROWNUM <=MAX_N ) 
+WHERE rnum >=MIN_N;
+END FILTRA_PER_TITOLO;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GET_ACCOUNT_GRUPPI" 
+(
+  USERNAME_A IN VARCHAR2    
+,    N_cursor in out SYS_REFCURSOR)
+
+AS 
+       begin
+        open N_cursor for
+          select AG.nome_gruppo
+
+          from GRUPPO_AZZURRO.account_gruppo AG where AG.username=USERNAME_A;
+
+END GET_ACCOUNT_GRUPPI;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GET_FUNZIONALITA_GRUPPO" 
+(    N_cursor in out SYS_REFCURSOR
+, GRUPPO_A in VARCHAR2)
+
+AS 
+BEGIN
+  open N_cursor for
+
+          select distinct  F.NOME_FUNZIONALITA, F.SIGLA_FUNZIONALITA 
+
+          from FUNZIONALITA F, GRUPPO_FUNZIONALITA GF 
+          WHERE GF.NOME_GRUPPO = GRUPPO_A AND F.SIGLA_FUNZIONALITA = GF.SIGLA_FUNZIONALITA ;
+       
+END GET_FUNZIONALITA_GRUPPO;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GET_LISTA_ACCOUNT" (
+
+    N_cursor in out SYS_REFCURSOR)
+    AS 
+BEGIN
+        open N_cursor for
+
+          select nome, cognome,username, password, sigla_redazione,sigla_giornalista,stato
+
+          from GRUPPO_AZZURRO.account  order by cognome,nome;
+
+  
+END GET_LISTA_ACCOUNT;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GET_LISTA_GRUPPI" 
+(
+
+    N_cursor in out SYS_REFCURSOR)
+
+AS 
+       begin
+        open N_cursor for
+
+          select nome_gruppo
+
+          from GRUPPO_AZZURRO.gruppo;
+END GET_LISTA_GRUPPI;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GET_LISTA_NOTIZIE" 
+(
+  
+    N_cursor in out SYS_REFCURSOR )
+
+AS 
+       begin
+        open N_cursor for
+
+          select id, titolo, autore,data_creazione, data_trasmissione, stato, blocco,ultimo_digitatore, ultimo_accesso
+
+          from GRUPPO_AZZURRO.notizia order by data_creazione desc;
+
+
+END GET_LISTA_NOTIZIE;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GET_LISTA_NOTIZIE_AUTORE" (
+  
+    N_cursor in out SYS_REFCURSOR
+    ,AUTORE_N in VARCHAR2)
+
+AS 
+       begin
+        open N_cursor for
+
+          select id, titolo, autore,data_creazione, data_trasmissione, stato, blocco,ultimo_digitatore
+
+,ultimo_accesso          from GRUPPO_AZZURRO.notizia WHERE AUTORE like '%'||AUTORE_N||'%'order by data_creazione desc;
+
+
+END GET_LISTA_NOTIZIE_AUTORE;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GET_LISTA_NOTIZIE_STATO" 
+
+(
+  
+    N_cursor in out SYS_REFCURSOR
+    ,STATO_N in VARCHAR2)
+
+AS 
+       begin
+        open N_cursor for
+
+          select id, titolo, autore,data_creazione, data_trasmissione, stato, blocco,ultimo_digitatore
+
+,ultimo_accesso          from GRUPPO_AZZURRO.notizia WHERE STATO= STATO_N order by data_creazione desc;
+
+END GET_LISTA_NOTIZIE_STATO;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GET_LISTA_NOTIZIE_TITOLO" 
+(
+  
+    N_cursor in out SYS_REFCURSOR
+    ,TITOLO_N in VARCHAR2)
+
+AS 
+       begin
+        open N_cursor for
+
+          select id,titolo, autore,data_creazione, data_trasmissione, stato, blocco,ultimo_digitatore
+
+,ultimo_accesso          from GRUPPO_AZZURRO.notizia WHERE TITOLO like '%'||TITOLO_N||'%' order by data_creazione desc;
+
+
+END GET_LISTA_NOTIZIE_TITOLO;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GET_NOME_USERNAME" 
+(USER_A IN VARCHAR2,
+N_cursor in out SYS_REFCURSOR)
+AS 
+BEGIN
+ open N_cursor for
+  SELECT nome, cognome FROM GRUPPO_AZZURRO.ACCOUNT WHERE USERNAME=USER_A;
+END GET_NOME_USERNAME;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GET_TRASMISSIONI" 
+(
+
+    N_cursor in out SYS_REFCURSOR)
+AS 
+BEGIN
+        open N_cursor for
+
+          select id ,titolo, sottotitolo, autore, ultimo_digitatore, data_creazione, testo
+
+          from gruppo_azzurro.trasmetti_view;
+          
+
+  
+END GET_TRASMISSIONI;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GETACCOUNT_FROM_USER" (
+	   i_username IN ACCOUNT.USERNAME%TYPE,
+     
+	   o_dbaccount OUT SYS_REFCURSOR)
+IS
+BEGIN
+ 
+  OPEN o_dbaccount FOR
+  SELECT * FROM ACCOUNT WHERE USERNAME = i_username;
+ 
+END;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GETACCOUNTCURSOR" (
+	   i_username IN ACCOUNT.USERNAME%TYPE,
+     i_password IN ACCOUNT.PASSWORD%TYPE,
+	   o_dbaccount OUT SYS_REFCURSOR)
+IS
+BEGIN
+ 
+  OPEN o_dbaccount FOR
+  SELECT * FROM ACCOUNT WHERE USERNAME = i_username AND PASSWORD = i_password AND STATO='A';
+ 
+END;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."GETRUOLIACCOUNTCURSOR" (
+	   i_username IN ACCOUNT.USERNAME%TYPE,
+	   o_dbaccount OUT SYS_REFCURSOR)
+IS
+BEGIN
+ 
+  OPEN o_dbaccount FOR
+  SELECT r.* FROM ACCOUNT_GRUPPO ur, GRUPPO r WHERE ur.USERNAME = i_username and ur.NOME_GRUPPO = r.NOME_GRUPPO;
+ 
+END;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."INSERIMENTO_ACCOUNT" 
+(
+  NEW_NOME IN VARCHAR2  
+, NEW_COGNOME IN VARCHAR2  
+, NEW_USERNAME IN VARCHAR2  
+, NEW_PASSWORD IN VARCHAR2  
+, NEW_SIGLAR IN VARCHAR2  
+, NEW_SIGLAG IN VARCHAR2  
+) AS 
+BEGIN
+  INSERT INTO GRUPPO_AZZURRO.ACCOUNT(nome, cognome, username, password, sigla_redazione,sigla_giornalista) values (NEW_NOME, NEW_COGNOME, NEW_USERNAME, NEW_PASSWORD , NEW_SIGLAR,NEW_SIGLAG);
+END INSERIMENTO_ACCOUNT;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."INSERIMENTO_NOTIZIA" 
+(
+  NEW_TITOLO IN VARCHAR2  
+, NEW_SOTTOTITOLO IN VARCHAR2  
+, NEW_AUTORE IN VARCHAR2 
+, NEW_TESTO IN CLOB  
+, NEW_LUNGHEZZA_TESTO IN NUMBER  
+) AS 
+BEGIN
+  INSERT INTO gruppo_azzurro.notizia (titolo,sottotitolo,autore,testo,lunghezza_testo,data_creazione)  VALUES (NEW_TITOLO,NEW_SOTTOTITOLO,NEW_AUTORE,NEW_TESTO,NEW_LUNGHEZZA_TESTO,sysdate);
+END INSERIMENTO_NOTIZIA;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."INSERT_ACCOUNT_GRUPPI" 
+(
+  NEW_USER IN VARCHAR2  
+, NEW_GRUPPO IN VARCHAR2  
+) AS 
+BEGIN
+  INSERT INTO GRUPPO_AZZURRO.ACCOUNT_GRUPPO(username, nome_gruppo) values (NEW_USER, NEW_GRUPPO);
+  COMMIT;
+
+END INSERT_ACCOUNT_GRUPPI;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."REGISTRA_NOTIZIA" 
+( ID_N IN NUMBER
+, NEW_TITOLO IN VARCHAR2  
+, NEW_SOTTOTITOLO IN VARCHAR2  
+, NEW_ULTIMO_DIGITATORE IN VARCHAR2 
+, NEW_TESTO IN CLOB  
+, NEW_LUNGHEZZA_TESTO IN NUMBER  
+) AS 
+BEGIN
+  UPDATE gruppo_azzurro.notizia SET blocco='N',titolo=new_titolo,sottotitolo=NEW_SOTTOTITOLO,testo=NEW_TESTO,lunghezza_testo=NEW_LUNGHEZZA_TESTO,ultimo_digitatore=NEW_ULTIMO_DIGITATORE WHERE ID=ID_N;
+END REGISTRA_NOTIZIA;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."SBLOCCA_TUTTE_FROM_USER" 
+(USER_N IN VARCHAR2)
+AS 
+BEGIN
+  update GRUPPO_AZZURRO.NOTIZIA set blocco='N'WHERE ULTIMO_ACCESSO=USER_N AND BLOCCO='Y' AND STATO='S';
+END SBLOCCA_TUTTE_FROM_USER;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."SET_DATA_TRASMISSIONE" 
+(ID_N IN NUMBER)
+AS
+BEGIN
+ UPDATE GRUPPO_AZZURRO.notizia set data_trasmissione = SYSDATE where id=ID_N;
+
+END SET_DATA_TRASMISSIONE;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."SET_RUOLO_ACCOUNT" 
+(
+  RIF_USER IN VARCHAR2  
+, RIF_GRUPPO IN VARCHAR2  
+) AS 
+BEGIN
+  INSERT INTO GRUPPO_AZZURRO.ACCOUNT_GRUPPO VALUES (RIF_USER,RIF_GRUPPO);
+END SET_RUOLO_ACCOUNT;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."TRASMISSIONE_NOTIZIA" 
+(ID_N IN VARCHAR2,
+ULTIMO_DIGITATORE_N IN VARCHAR2 )
+AS 
+BEGIN
+  update Gruppo_Azzurro.notizia set stato='Q', ULTIMO_DIGITATORE=ULTIMO_DIGITATORE_N where id=ID_N ;
+END TRASMISSIONE_NOTIZIA;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."TRASMISSIONE_NOTIZIA_BATCH" 
+(
+ID_N in number 
+)
+AS 
+BEGIN
+  UPDATE GRUPPO_AZZURRO.NOTIZIA set stato='T' where id=ID_N;
+END TRASMISSIONE_NOTIZIA_BATCH;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."UPDATE_ACCOUNT" 
+(
+  NEW_NOME IN VARCHAR2,
+  NEW_COGNOME IN VARCHAR2,
+  NEW_PASSWORD IN VARCHAR2, 
+  NEW_SIGLAR IN VARCHAR2, 
+  NEW_SIGLAG IN VARCHAR2, 
+  NEW_USERNAME IN VARCHAR2,
+  num out integer
+) AS 
+  BEGIN
+declare username_sigla varchar2(55);
+begin
+  select count(*) into num from gruppo_azzurro.account where sigla_giornalista=new_siglag; 
+  if num=0 then
+    update GRUPPO_AZZURRO.account set sigla_giornalista=NEW_SIGLAG, password=NEW_PASSWORD, sigla_redazione =NEW_SIGLAR, nome=NEW_NOME, cognome=NEW_COGNOME
+    where username=NEW_USERNAME;
+   else
+   if num=1 then
+   select username into username_sigla from GRUPPO_AZZURRO.account where sigla_giornalista=NEW_SIGLAG;
+   if username_sigla=NEW_USERNAME then
+    update GRUPPO_AZZURRO.account set sigla_giornalista=NEW_SIGLAG, password=NEW_PASSWORD,sigla_redazione =NEW_SIGLAR, nome=NEW_NOME, cognome=NEW_COGNOME
+    where username=NEW_USERNAME;
+    num:=0;
+    end if;
+    end if;
+    end if;
+  
+end;
+END UPDATE_ACCOUNT;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."UPDATE_ACCOUNT_NOPASS" 
+ 
+(
+  NEW_NOME IN VARCHAR2,
+  NEW_COGNOME IN VARCHAR2,
+  NEW_SIGLAR IN VARCHAR2, 
+  NEW_SIGLAG IN VARCHAR2, 
+  NEW_USERNAME IN VARCHAR2,
+  num out integer
+) AS 
+BEGIN
+declare username_sigla varchar2(55);
+begin
+  select count(*) into num from gruppo_azzurro.account where sigla_giornalista=NEW_SIGLAG; 
+  if num=0 then
+    update GRUPPO_AZZURRO.account set sigla_giornalista=NEW_SIGLAG, sigla_redazione =NEW_SIGLAR, nome=NEW_NOME, cognome=NEW_COGNOME
+    where username=NEW_USERNAME;
+   else
+   if num=1 then
+   select username into username_sigla from GRUPPO_AZZURRO.account where sigla_giornalista=NEW_SIGLAG;
+   if username_sigla=NEW_USERNAME then
+    update GRUPPO_AZZURRO.account set sigla_giornalista=NEW_SIGLAG, sigla_redazione =NEW_SIGLAR, nome=NEW_NOME, cognome=NEW_COGNOME
+    where username=NEW_USERNAME;
+    num:=0;
+    end if;
+    end if;
+    end if;
+  
+end;
+END UPDATE_ACCOUNT_NOPASS;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."UPDATE_NOTIZIA" (
+ ID_N IN NUMBER,
+ USERNAME IN VARCHAR2,
+  N_cursor in out SYS_REFCURSOR
+ )
+AS 
+BEGIN
+open N_cursor for
+  select stato, blocco, titolo, sottotitolo, autore, ultimo_digitatore, testo, lunghezza_testo,data_creazione, data_trasmissione,ID, ultimo_accesso from GRUPPO_AZZURRO.NOTIZIA where id=ID_N and stato='S' and (blocco='N'or(blocco='Y' and ultimo_accesso=USERNAME));
+  update GRUPPO_AZZURRO.notizia set blocco='Y' , ultimo_accesso=username where id=ID_N;
+END UPDATE_NOTIZIA;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."VERIFICA_ACCESSO" 
+ (
+	   i_username IN varchar2,
+     i_password IN varchar2,
+	   login OUT integer)AS
+BEGIN
+
+  SELECT count(*) into login FROM gruppo_azzurro.ACCOUNT WHERE USERNAME = i_username AND PASSWORD = i_password AND STATO='A';
+
+END VERIFICA_ACCESSO;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."VERIFICA_ACCOUNT" 
+(
+  STATO OUT integer
+, USERNAME_A IN VARCHAR2 
+) AS 
+BEGIN
+  
+  select count(*) INTO STATO FROM GRUPPO_AZZURRO.ACCOUNT WHERE USERNAME = USERNAME_A;
+  
+END VERIFICA_ACCOUNT;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."VERIFICA_BLOCCO_NOTIZIA" 
+ (
+ID_N IN NUMBER 
+,OUT_N OUT NUMBER
+)
+AS 
+BEGIN
+
+  select count(*) into OUT_N from Gruppo_azzurro.notizia where id=ID_N and blocco='N' and stato='S';
+END VERIFICA_BLOCCO_NOTIZIA;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."VERIFICA_ID_NOTIZIA" 
+ (
+ID_N IN NUMBER 
+,OUT_N OUT INTEGER
+,USERNAME_N IN VARCHAR2
+)
+AS 
+BEGIN
+
+  select count(*) into OUT_N from Gruppo_azzurro.notizia where id=ID_N and(
+ (blocco='N' and stato='S')  or (blocco='Y' and ultimo_accesso=USERNAME_N and stato='S'));
+END VERIFICA_ID_NOTIZIA;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."VERIFICA_SIGLA" 
+(
+  STATO OUT integer
+, SIGLA_GIORNALISTA_A IN VARCHAR2
+) AS 
+BEGIN
+  
+  select count(*) INTO STATO FROM GRUPPO_AZZURRO.ACCOUNT WHERE SIGLA_GIORNALISTA = SIGLA_GIORNALISTA_A;
+  
+END VERIFICA_SIGLA;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."VERIFICA_ULTIMO_ACCESSO" 
+(ID_N IN NUMBER,
+USER_N IN VARCHAR2,
+OUT_N OUT INTEGER)
+AS 
+BEGIN
+ SELECT COUNT(*) INTO OUT_N FROM GRUPPO_AZZURRO.NOTIZIA WHERE ID=ID_N AND ULTIMO_ACCESSO=USER_N and stato='S';
+END VERIFICA_ULTIMO_ACCESSO;
+/
+ 
+
+  CREATE OR REPLACE PROCEDURE "GRUPPO_AZZURRO"."VISUALIZZA_NOTIZIA" (
+ ID_N IN NUMBER,
+  N_cursor in out SYS_REFCURSOR
+ )
+AS 
+BEGIN
+open N_cursor for
+  select stato, blocco, titolo, sottotitolo, autore, ultimo_digitatore, testo, lunghezza_testo,data_creazione, data_trasmissione,ID, ultimo_accesso from GRUPPO_AZZURRO.NOTIZIA where id=ID_N;
+END VISUALIZZA_NOTIZIA;
+/
+ 
